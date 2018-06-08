@@ -25,8 +25,8 @@ services:
       - "8000:8000"
       - "3001:3001"
     volumes:
-      - "./app/gulp3_project:/app/gulp3_project"
-    working_dir: /app/gulp3_project
+      - "./app/project_sample_gulp3:/app/project_sample_gulp3"
+    working_dir: /app/project_sample_gulp3
     command:
       - /bin/sh
       - -c
