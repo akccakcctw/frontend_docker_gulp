@@ -1,0 +1,9 @@
+html, body {
+  color: $c--text;
+  background: $c--primary;
+	font-size: $fz--large;
+	display: flex;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+}

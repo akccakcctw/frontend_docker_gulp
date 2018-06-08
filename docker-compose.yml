@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  sample:
+    build: .
+    container_name: sample
+    ports:
+      # "host_port:container_port"
+      - "8001:8001"
+      - "3002:3001"
+    volumes:
+      # "host_folder:container_folder"
+      - "./app/project_sample:/app/project_sample"
+    working_dir: /app/project_sample
+    command:
+      - /bin/sh
+      - -c
+      - |
+          npm install
+          npm run gulp
+  sample2:
+    build: .
+    container_name: sample2
+    ports:
+      - "8000:8000"
+      - "3001:3001"
+    volumes:
+      - "./app/gulp3_project:/app/gulp3_project"
+    working_dir: /app/gulp3_project
+    command:
+      - /bin/sh
+      - -c
+      - |
+          npm install
+          npm run gulp watch
+

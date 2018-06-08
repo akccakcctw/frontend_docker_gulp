@@ -1,0 +1,13 @@
+{
+  "name": "frontend_docker_gulp",
+  "version": "0.1.0",
+  "description": "run gulp tasks in docker container",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "docker"
+  ],
+  "author": "Rex Tsou <akccakccwww@gmail.com>",
+  "license": "MIT"
+}
