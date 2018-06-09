@@ -17,27 +17,16 @@
 
 some useful commands:
 
-rebuild the container
-
-```
+```sh
+# rebuild the container
 docker-compose build --no-cache
 
-```
-
-Stop all running containers
-
-```
+# stop all running containers
 docker stop $(docker ps -aq)
-```
 
-Remove all containers
-
-```
+# remove all containers
 docker rm $(docker ps -aq)
-```
 
-Remove all images
-
-```
+# remove all images
 docker rmi $(docker images -q)
 ```
