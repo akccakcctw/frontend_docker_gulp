@@ -2,6 +2,7 @@ version: "3"
 
 services:
   sample:
+    image: "frontend_gulp"
     build: .
     container_name: sample
     ports:
@@ -10,7 +11,7 @@ services:
       - "3000:3000"
     volumes:
       # "host_folder:container_folder"
-      - "./app/project_sample:/app/project_sample"
+      - "./app/project_sample:/app/project_sample:cached"
     working_dir: /app/project_sample
     command:
       - /bin/sh
@@ -19,13 +20,13 @@ services:
           npm install
           npm run gulp
   sample2:
-    build: .
+    image: "frontend_gulp"
     container_name: sample2
     ports:
       - "8001:8001"
       - "3001:3001"
     volumes:
-      - "./app/project_sample_gulp3:/app/project_sample_gulp3"
+      - "./app/project_sample_gulp3:/app/project_sample_gulp3:cached"
     working_dir: /app/project_sample_gulp3
     command:
       - /bin/sh
