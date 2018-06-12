@@ -4,7 +4,7 @@ const browserSync = require('browser-sync').create(); // browser auto reload
 
 const $ = gulpLoadPlugins();
 
-gulp.task('default', ['css']);
+gulp.task('default', ['css', 'js', 'markups']);
 
 gulp.task('browserSync', ['default'], () => {
   browserSync.init({
@@ -22,9 +22,11 @@ gulp.task('browserSync', ['default'], () => {
 
 gulp.task('watch', ['browserSync'], () => {
   gulp.watch('src/sass/**/*.scss', {mode: 'poll'}, ['css']);
+	gulp.watch('src/js/**/*.js', {mode: 'poll'}, ['js']);
+	gulp.watch('src/views/**/*.pug', {mode: 'poll'}, ['markups']);
 });
 
-gulp.task('min', ['css-min']);
+gulp.task('min', ['css-min', 'js-min']);
 
 console.log(gulp.dest('dist/css'));
 
@@ -59,3 +61,31 @@ gulp.task('css-min', () => {
     }))
 });
 
+gulp.task('js', () => {
+	gulp.src('src/js/**/*.js')
+		.pipe($.plumber())
+		.pipe($.babel())
+		.pipe(gulp.dest('dist/js')) // output folder
+		.pipe(browserSync.stream())
+});
+
+gulp.task('js-min', () => {
+	gulp.src('src/js/**/*.js')
+		.pipe($.plumber)
+		.pipe($.babel())
+		.pipe($.uglify())
+		.pipe($.rename({ suffix: '.min' }))
+		.pipe(gulp.dest('dist/js'))
+		.pipe($.notify({
+			message: 'Minify Javascript Complete!',
+			onLast: true,
+		}))
+});
+
+gulp.task('markups', () => {
+	gulp.src('src/views/**/*.pug')
+		.pipe($.plumber())
+		.pipe($.pug({ pretty: true }))
+		.pipe(gulp.dest('dist')) // output folder
+		.pipe(browserSync.stream())
+});
