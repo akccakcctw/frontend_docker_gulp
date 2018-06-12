@@ -16,8 +16,13 @@ const paths = {
   styles: {
     src: 'src/sass/**/*.scss',
     dest: 'dist/css/',
-  }
-}
+  },
+  markups: {
+    src: 'src/views/**/*.pug',
+    dest: 'dist/',
+  },
+};
+
 
 const clean = () => del(['dist/css', 'dist/js']);
 
@@ -66,12 +71,20 @@ function compileJS() {
     .pipe(gulp.dest(paths.scripts.dest))
 }
 
+function compileMarkups() {
+  return gulp.src(paths.markups.src)
+    .pipe($.plumber())
+    .pipe($.pug({ pretty: true }))
+    .pipe(gulp.dest(paths.markups.dest))
+}
+
 const watchCSS = () => gulp.watch(paths.styles.src, { usePolling: true }, gulp.series(compileCSS));
 const watchJS = () => gulp.watch(paths.scripts.src, { usePolling: true }, gulp.series(compileJS, reload));
-const compile = gulp.parallel(compileCSS, compileJS);
+const watchMarkups = () => gulp.watch(paths.markups.src, { usePolling: true }, gulp.series(compileMarkups, reload));
+const compile = gulp.parallel(compileCSS, compileJS, compileMarkups);
 compile.description = 'compile all sources';
 
-const watch = gulp.parallel(watchCSS, watchJS);
+const watch = gulp.parallel(watchCSS, watchJS, watchMarkups);
 
 function minifyCSS() {
   return gulp.src(paths.styles.src)
@@ -118,10 +131,12 @@ export {
   compile,
   compileCSS,
   compileJS,
+  compileMarkups,
   serve,
   watch,
   watchCSS,
   watchJS,
+  watchMarkups,
   minifyCSS,
   minifyJS,
   min,
