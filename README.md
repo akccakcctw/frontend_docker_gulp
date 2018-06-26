@@ -8,15 +8,25 @@
 
 ## Usage
 
-1. Put your projects under `./app`, such as `./app/project_sample`.
-2. Adjuct `docker-compose.yml`. (you may want to do some cool things)
-3. Run `docker-compose up`. (or `docker-compose up [your_project]`, if you have multiple projects)
-4. `<Ctrl-c>` to close it.
+1. Clone the repository: `git clone https://github.com/akccakcctw/frontend_docker_gulp.git`.
+2. Put your project(s) under `./app`, such as `./app/project_sample`.
+3. Edit `docker-compose.yml`. (you may want to do some cool things)
+4. Run `docker-compose up`. (if you have multiple projects, you can also `docker-compose up [your_project]` to start specific project)
+5. `<Ctrl-c>` to close it.
+
+
+## Features
+
+- gulp3 and gulp4 project sample, with following tools enabled:
+	- BrowserSync (watch your scss file)
+	- Babel
+	- Pug
+	- SCSS
 
 
 ## Development
 
-some useful commands:
+some useful commands for development:
 
 ```sh
 # rebuild the container
