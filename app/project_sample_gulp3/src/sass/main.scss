@@ -1,9 +1,21 @@
-html, body {
-  color: yellow;
-	background: #111;
-	font-size: 2em;
-	display: flex;
-	height: 100%;
-	align-items: center;
-	justify-content: center;
-}
+// vendors
+@import 'vendor/normalize.css/normalize';
+
+// variables
+@import 'variable';
+
+// fonts
+@import 'font';
+
+// mixins
+@import 'mixin/breakpoint';
+
+// default skin
+@import 'base';
+
+// modules
+@import 'module/header';
+@import 'module/footer';
+
+// layouts
+// @import 'layout/index';
