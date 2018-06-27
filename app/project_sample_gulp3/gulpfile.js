@@ -28,17 +28,17 @@ gulp.task('watch', ['browserSync'], () => {
 
 gulp.task('min', ['css-min', 'js-min']);
 
-console.log(gulp.dest('dist/css'));
-
 gulp.task('css', () => {
   gulp.src('src/sass/**/*.scss')
     .pipe($.plumber())
+		.pipe($.sourcemaps.init())
     .pipe($.sass.sync({
       outputStyle: 'nested', // expanded, nested, compact, compressed
       precision: 10,
       includePath: ['.'],
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({ browsers: ['last 2 versions'] }))
+		.pipe($.sourcemaps.write('./sourcemaps'))
     .pipe(gulp.dest('dist/css')) // output folder
     .pipe(browserSync.stream())
   // .pipe($.notify("Compile Sass Complete!"))
