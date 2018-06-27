@@ -4,6 +4,21 @@ const browserSync = require('browser-sync').create(); // browser auto reload
 
 const $ = gulpLoadPlugins();
 
+const paths = {
+  scripts: {
+    src: 'src/js/**/*.js',
+    dest: 'dist/js/',
+  },
+  styles: {
+    src: 'src/sass/**/*.scss',
+    dest: 'dist/css/',
+  },
+  markups: {
+    src: 'src/views/**/*.pug',
+    dest: 'dist/',
+  },
+};
+
 gulp.task('default', ['css', 'js', 'markups']);
 
 gulp.task('browserSync', ['default'], () => {
@@ -21,15 +36,15 @@ gulp.task('browserSync', ['default'], () => {
 });
 
 gulp.task('watch', ['browserSync'], () => {
-  gulp.watch('src/sass/**/*.scss', {mode: 'poll'}, ['css']);
-	gulp.watch('src/js/**/*.js', {mode: 'poll'}, ['js']);
-	gulp.watch('src/views/**/*.pug', {mode: 'poll'}, ['markups']);
+  gulp.watch(paths.styles.src, {mode: 'poll'}, ['css']);
+	gulp.watch(paths.scripts.src, {mode: 'poll'}, ['js']);
+	gulp.watch(paths.markups.src, {mode: 'poll'}, ['markups']);
 });
 
 gulp.task('min', ['css-min', 'js-min']);
 
 gulp.task('css', () => {
-  gulp.src('src/sass/**/*.scss')
+  gulp.src(paths.styles.src)
     .pipe($.plumber())
 		.pipe($.sourcemaps.init())
     .pipe($.sass.sync({
@@ -39,13 +54,13 @@ gulp.task('css', () => {
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({ browsers: ['last 2 versions'] }))
 		.pipe($.sourcemaps.write('./sourcemaps'))
-    .pipe(gulp.dest('dist/css')) // output folder
+    .pipe(gulp.dest(paths.styles.dest)) // output folder
     .pipe(browserSync.stream())
   // .pipe($.notify("Compile Sass Complete!"))
 });
 
 gulp.task('css-min', () => {
-  gulp.src('src/sass/**/*.scss')
+  gulp.src(paths.styles.src)
     .pipe($.plumber())
     .pipe($.sass.sync({
       outputStyle: 'compressed',
@@ -54,7 +69,7 @@ gulp.task('css-min', () => {
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({ browsers: ['last 2 versions'] }))
     .pipe($.rename({ suffix: '.min' }))
-    .pipe(gulp.dest('./dist/css')) // output folder
+    .pipe(gulp.dest(paths.styles.dest)) // output folder
     .pipe($.notify({
       message: 'Minify Sass Complete!',
       onLast: true,
@@ -62,20 +77,20 @@ gulp.task('css-min', () => {
 });
 
 gulp.task('js', () => {
-	gulp.src('src/js/**/*.js')
+	gulp.src(paths.scripts.src)
 		.pipe($.plumber())
 		.pipe($.babel())
-		.pipe(gulp.dest('dist/js')) // output folder
+		.pipe(gulp.dest(paths.scripts.dest)) // output folder
 		.pipe(browserSync.stream())
 });
 
 gulp.task('js-min', () => {
-	gulp.src('src/js/**/*.js')
+	gulp.src(paths.scripts.src)
 		.pipe($.plumber)
 		.pipe($.babel())
 		.pipe($.uglify())
 		.pipe($.rename({ suffix: '.min' }))
-		.pipe(gulp.dest('dist/js'))
+		.pipe(gulp.dest(paths.scripts.dest))
 		.pipe($.notify({
 			message: 'Minify Javascript Complete!',
 			onLast: true,
@@ -83,9 +98,9 @@ gulp.task('js-min', () => {
 });
 
 gulp.task('markups', () => {
-	gulp.src('src/views/**/*.pug')
+	gulp.src(paths.markups.src)
 		.pipe($.plumber())
 		.pipe($.pug({ pretty: true }))
-		.pipe(gulp.dest('dist')) // output folder
+		.pipe(gulp.dest(paths.markups.dest)) // output folder
 		.pipe(browserSync.stream())
 });
