@@ -19,6 +19,10 @@ const paths = {
   },
 };
 
+const configAutoprefixer = {
+	browsers: ['last 2 versions']
+};
+
 gulp.task('default', ['css', 'js', 'markups']);
 
 gulp.task('browserSync', ['default'], () => {
@@ -52,7 +56,7 @@ gulp.task('css', () => {
       precision: 10,
       includePath: ['.'],
     }).on('error', $.sass.logError))
-    .pipe($.autoprefixer({ browsers: ['last 2 versions'] }))
+    .pipe($.autoprefixer(configAutoprefixer))
 		.pipe($.sourcemaps.write('./sourcemaps'))
     .pipe(gulp.dest(paths.styles.dest)) // output folder
     .pipe(browserSync.stream())
@@ -67,7 +71,7 @@ gulp.task('css-min', () => {
       precision: 10,
       includePath: ['.'],
     }).on('error', $.sass.logError))
-    .pipe($.autoprefixer({ browsers: ['last 2 versions'] }))
+    .pipe($.autoprefixer(configAutoprefixer))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(paths.styles.dest)) // output folder
     .pipe($.notify({
