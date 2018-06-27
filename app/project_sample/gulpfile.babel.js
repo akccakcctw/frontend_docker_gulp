@@ -21,10 +21,13 @@ const paths = {
     src: 'src/views/**/*.pug',
     dest: 'dist/',
   },
+  htmls: {
+    src: 'src/views/**/*.html',
+    dest: 'dist/',
+  }
 };
 
-
-const clean = () => del(['dist/css', 'dist/js']);
+const clean = () => del(['dist/']);
 
 // create livereload server
 const server = browserSync.create();
@@ -78,13 +81,20 @@ function compileMarkups() {
     .pipe(gulp.dest(paths.markups.dest))
 }
 
+function compileHTMLs() {
+  return gulp.src(paths.htmls.src)
+    .pipe($.plumber())
+    .pipe(gulp.dest(paths.htmls.dest))
+}
+
 const watchCSS = () => gulp.watch(paths.styles.src, { usePolling: true }, gulp.series(compileCSS));
 const watchJS = () => gulp.watch(paths.scripts.src, { usePolling: true }, gulp.series(compileJS, reload));
 const watchMarkups = () => gulp.watch(paths.markups.src, { usePolling: true }, gulp.series(compileMarkups, reload));
-const compile = gulp.parallel(compileCSS, compileJS, compileMarkups);
+const watchHTMLs = () => gulp.watch(paths.htmls.src, { usePolling: true }, gulp.series(compileHTMLs, reload));
+const compile = gulp.parallel(compileCSS, compileJS, compileMarkups, compileHTMLs);
 compile.description = 'compile all sources';
 
-const watch = gulp.parallel(watchCSS, watchJS, watchMarkups);
+const watch = gulp.parallel(watchCSS, watchJS, watchMarkups, watchHTMLs);
 
 function minifyCSS() {
   return gulp.src(paths.styles.src)
@@ -137,6 +147,7 @@ export {
   watchCSS,
   watchJS,
   watchMarkups,
+  watchHTMLs,
   minifyCSS,
   minifyJS,
   min,
